@@ -4,9 +4,13 @@ import Asientos from '../asientos/Asientos';
 
 export default function Avion() {
   return (
-    <div>
-        <img src={avion} className="App-logo" alt="logo" />
+    <div className='avion__contenedor'>
+      <div className='controles'>
+        <img src={avion} className="avion__svg" alt="logo" />
+      </div>
+      <div className='asientos'>
         <Asientos></Asientos>
+      </div>
     </div>
   )
 }

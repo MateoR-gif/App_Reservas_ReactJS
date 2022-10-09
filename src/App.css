@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+*{
+  margin: 0;
+  box-sizing: border-box;
+  /* outline: 1px solid; */
 }
 
-.App-logo {
-  height: 100vh;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.avion__contenedor{
   min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.avion__svg {
+  width: 100%;
+  height: 100%;
+}
+
+.controles, .asientos{
+  width: 50%;
+}
+
+.asientos{
+  display: flex;
+  justify-content: center;
+}
+
+.asientos__contenedor{
+  border: 1px dotted;
+  border-radius: 10px;
+  width: 500px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+.ejecutivas{
+  border: 3px solid blue;
+  border-radius: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  margin-bottom: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.normales{
+  border: 3px solid green;
+  border-radius: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 2;
+  grid-template-rows: repeat(7, 1fr);
+  row-gap: 30px;
+  column-gap: 0px;
 }
+
+.asiento__contenedor{
+  display: flex;
+  justify-content: center;
+}
+
+.asiento{
+  width: 100%;
+}
+
