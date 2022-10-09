@@ -1,6 +1,6 @@
 import React from 'react'
 import avion from './avion.svg';
-import Asientos from './Asientos';
+import Asientos from '../asientos/Asientos';
 
 export default function Avion() {
   return (
