@@ -94,9 +94,11 @@
   border: 3px solid blue;
   border-radius: 10px;
   display: grid;
-  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   margin-bottom: 10px;
   column-gap: 5px;
+  padding-left: 80px;
+  padding-right: 80px;
 }
 
 .normales{
@@ -112,13 +114,13 @@
   height: 650px;
   align-self: center;
   position: fixed;
-  bottom: 80px;
+  bottom: 60px;
 }
 
 .pasillo__contenedor{
   align-self: center;
   position: absolute;
-  bottom: 60px;
+  bottom: 30px;
   color: red;
 }
 
