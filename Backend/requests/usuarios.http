@@ -1,0 +1,20 @@
+
+@apiSilla = http://localhost:3001/silla
+@apiUsuario = http://localhost:3001/usuario
+
+GET {{apiSilla}}
+
+###
+GET {{apiUsuario}}
+
+###
+POST  {{apiUsuario}}
+Content-Type: application/json
+
+{
+    "Cedula": 123456789,
+    "Nombre": "Jorge"
+}
+
+###
+GET {{apiSilla}}/2
