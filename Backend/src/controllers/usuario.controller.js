@@ -14,6 +14,16 @@ export const getUsuario = async (req, res) => {
 
 };
 
+export const getUsuariobyId = async (req, res) => {
+    const { cedula } = req.params;
+
+    const pool = await getConnection();
+    const result = await pool.request().input("cedula", cedula).query(queries.getUsuariobyId);
+
+    res.send(result.recordset[0])
+
+};
+
 
 
 export const createNewUsuario = async (req, res) => {

@@ -2,19 +2,45 @@
 @apiSilla = http://localhost:3001/silla
 @apiUsuario = http://localhost:3001/usuario
 
+@apiReserva = http://localhost:3001/reserva
+
 GET {{apiSilla}}
 
 ###
+GET {{apiSilla}}/2
+
+###
+PUT {{apiSilla}}/2
+Content-Type: application/json
+
+{
+    "estado": 0
+}
+
+###
 GET {{apiUsuario}}
+
+###
+GET {{apiUsuario}}/123456789
 
 ###
 POST  {{apiUsuario}}
 Content-Type: application/json
 
 {
-    "Cedula": 123456789,
-    "Nombre": "Jorge"
+    "Cedula": 159753,
+    "Nombre": "Santiago"
 }
 
 ###
-GET {{apiSilla}}/2
+GET {{apiReserva}}
+
+###
+POST  {{apiReserva}}
+Content-Type: application/json
+
+{
+    "idReserva": 8942345,
+    "idSilla": 2,
+    "idCedula": 987654321
+}
