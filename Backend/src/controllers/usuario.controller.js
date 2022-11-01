@@ -19,7 +19,9 @@ export const getUsuariobyId = async (req, res) => {
 
     const pool = await getConnection();
     const result = await pool.request().input("cedula", cedula).query(queries.getUsuariobyId);
-
+    if(result.recordset.length === 0){
+        res.status(404).json({msg: 'No se encontró el usuario'});
+    }
     res.send(result.recordset[0])
 
 };

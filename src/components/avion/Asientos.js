@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState, useCallback } from 'react'
 import { sillas } from '../../utils/APIRoutes'
 import asientoIMG from '../../assets/asiento.svg'
+import Venta from './Venta'
 
 var numSillasSeleccionadas = 0
 var valorEstaCompra = 0
@@ -11,13 +12,13 @@ export default function Asientos() {
   const [asientos, setAsientos] = useState([])
   const [ejecutivas, setEjecutivas] = useState([])
   const [economicas, setEconomicas] = useState([])
+  const [hayVenta, setHayVenta] = useState(false)
+  const [estaReserva, setEstaReserva] = useState([])
   const [error, setError] = useState([])
-
 
   const getAsientos = useCallback(async () => {
     try {
       const response = await axios.get(sillas)
-      console.log(response)
       setAsientos(response.data)
     } catch (error) {
       console.log(error)
@@ -72,6 +73,7 @@ export default function Asientos() {
   }
 
   useEffect(() => {
+    console.log(asientos)
     setEjecutivas(asientos.filter((asiento) => asiento.Clase === 'Ejecutiva'))
     setEconomicas(asientos.filter((asiento) => asiento.Clase === 'Economica'))
   }, [asientos])
@@ -81,6 +83,11 @@ export default function Asientos() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  if (hayVenta) {
+    return (
+      <Venta></Venta>
+    )
+  }
   return (
     <div className='asientos__contenedor'>
       <div className='info__container'>
@@ -88,21 +95,23 @@ export default function Asientos() {
           <legend>
             Info
           </legend>
-          <div className='error__container'>
-            <h3 className='red'>{error}</h3>
-          </div>
-          <div className='esta__compra'>
-            <h4>Valor de esta compra: {valorEstaCompra}</h4>
-            <h4>Cantidad de Sillas: {numSillasSeleccionadas}</h4>
-          </div>
           <div className='info__sillas'>
             <img src={asientoIMG} alt="asiento" className='asiento__ejemplo red__filter'></img>
             <h4 className='red'>Silla Ocupada</h4>
             <img src={asientoIMG} alt="asiento" className='asiento__ejemplo green__filter'></img>
             <h4 className='green'>Silla Disponible</h4>
+            <h4 className='blue'>Espacio Ejecutivo</h4>
+            <h4 className='green'>Espacio Economico</h4>
           </div>
-          <h3 className='blue'>Sillas Ejecutivas</h3>
-          <h3 className='green'>Sillas Normales</h3>
+          <hr></hr>
+          <div className='esta__compra'>
+            <h4>Valor de esta compra: {valorEstaCompra}</h4>
+            <h4>Cantidad de Sillas: {numSillasSeleccionadas}</h4>
+            <button disabled={true}>Comprar</button>
+            <div className='error__container'>
+              <h4 className='red'>{error}</h4>
+            </div>
+          </div>
         </fieldset>
       </div>
       <div className='ejecutivas'>

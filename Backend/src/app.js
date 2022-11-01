@@ -4,20 +4,9 @@ import sillaRoutes  from './routes/silla.routes'
 import usuarioRoutes from './routes/usuario.routes'
 import reservaRoutes from './routes/reserva.routes'
 const bp = require('body-parser')
-var livereload = require('livereload');
-var connectLiveReload = require('connect-live-reload');
-
-const liveReloadServer = livereload.createServer();
-liveReloadServer.server.once("connection", () => {
-  setTimeout(() => {
-    liveReloadServer.refresh("/");
-  }, 100);
-});
 
 const app = express();
 const cors = require('cors')
-
-app.use(connectLiveReload());
 
 //settings
 app.set('port', config.port);
