@@ -133,6 +133,7 @@ button:hover {
   padding: 20px;
   display: flex;
   align-items: center;
+  margin-left: 50px;
 }
 
 .avion__svg {
@@ -145,8 +146,28 @@ button:hover {
   width: 50%;
 }
 
-.controles{
+.controles__reservas{
   border: 2px dotted;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  min-height: 30vh;
+  min-width: 50vw;
+}
+
+.reservas{
+  border-bottom: 2px dotted;
+  max-height: 30vh;
+  min-width: 50vw;
+  overflow-y: scroll;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.controles{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -208,6 +229,58 @@ button:hover {
 }
 
 .asiento {
-  width: 100%;
+  width: 80%;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.venta__container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.reservas__container{
+  min-width: 50%;
+  display: flex;
+  gap: 10px;
+}
+
+.mis__reservas__container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.reserva{
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.info__reserva{
+  display: flex;
+  flex-direction: column;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e9e8e6;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #045496;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #5fb4fa;
 }

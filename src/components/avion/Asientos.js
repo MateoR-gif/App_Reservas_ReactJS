@@ -6,6 +6,7 @@ import Venta from './Venta'
 
 var numSillasSeleccionadas = 0
 var valorEstaCompra = 0
+var sillasSeleccionadas = []
 
 export default function Asientos() {
 
@@ -13,67 +14,29 @@ export default function Asientos() {
   const [ejecutivas, setEjecutivas] = useState([])
   const [economicas, setEconomicas] = useState([])
   const [hayVenta, setHayVenta] = useState(false)
-  const [estaReserva, setEstaReserva] = useState([])
+  const [venta, setVenta] = useState([])
   const [error, setError] = useState([])
 
   const getAsientos = useCallback(async () => {
     try {
       const response = await axios.get(sillas)
-      setAsientos(response.data)
+      var asientos = []
+      response.data.forEach(element => {
+        if (element.Estado === false) {
+          element.reservada = false
+          asientos.push(element)
+        } else {
+          element.reservada = true
+          asientos.push(element)
+        }
+      });
+      setAsientos(asientos)
     } catch (error) {
       console.log(error)
     }
   }, [])
 
-  const handleSelect = (tipoSilla, index) => {
-    setError('')
-    if (tipoSilla === 'Ejecutiva') {
-      let sillas = [...ejecutivas]
-      let silla = { ...sillas[index] }
-      if (silla.Estado === true) {
-        silla.Estado = false
-        numSillasSeleccionadas -= 1
-        valorEstaCompra -= silla.Precio
-        sillas[index] = silla
-        setEjecutivas(sillas)
-      } else {
-        if (numSillasSeleccionadas < 3) {
-          silla.Estado = true
-          numSillasSeleccionadas += 1
-          valorEstaCompra += silla.Precio
-          sillas[index] = silla
-          setEjecutivas(sillas)
-        } else {
-          setError(['No puede seleccionar más de 3 asientos por compra'])
-        }
-      }
-    } else {
-      let sillas = [...economicas]
-      let silla = { ...sillas[index] }
-      if (silla.Estado === true) {
-        silla.Estado = false
-        numSillasSeleccionadas -= 1
-        valorEstaCompra -= silla.Precio
-        sillas[index] = silla
-        setEconomicas(sillas)
-      } else {
-        if (numSillasSeleccionadas < 3) {
-          silla.Estado = true
-          numSillasSeleccionadas += 1
-          valorEstaCompra += silla.Precio
-          sillas[index] = silla
-          setEconomicas(sillas)
-        } else {
-          setError(['No puede seleccionar más de 3 asientos por compra'])
-        }
-      }
-    }
-
-
-  }
-
   useEffect(() => {
-    console.log(asientos)
     setEjecutivas(asientos.filter((asiento) => asiento.Clase === 'Ejecutiva'))
     setEconomicas(asientos.filter((asiento) => asiento.Clase === 'Economica'))
   }, [asientos])
@@ -83,9 +46,86 @@ export default function Asientos() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleSelect = (tipoSilla, index) => {
+    setError('')
+    if (tipoSilla === 'Ejecutiva') {
+      let sillas = [...ejecutivas]
+      let silla = { ...sillas[index] }
+      if (silla.reservada) {
+        setError('Ya está reservada')
+      } else {
+        if (silla.Estado === true) {
+          silla.Estado = false
+          numSillasSeleccionadas -= 1
+          valorEstaCompra -= silla.Precio
+          let indexSilla = sillasSeleccionadas.indexOf(silla.idSilla)
+          sillasSeleccionadas.splice(indexSilla, 1)
+          sillas[index] = silla
+          setEjecutivas(sillas)
+        } else {
+          if (numSillasSeleccionadas < 3) {
+            silla.Estado = true
+            numSillasSeleccionadas += 1
+            valorEstaCompra += silla.Precio
+            sillasSeleccionadas.push(silla.idSilla)
+
+            sillas[index] = silla
+            setEjecutivas(sillas)
+          } else {
+            setError(['No puede seleccionar más de 3 asientos por compra'])
+          }
+        }
+      }
+    } else {
+      let sillas = [...economicas]
+      let silla = { ...sillas[index] }
+      if (silla.reservada) {
+        setError('Ya está reservada')
+      } else {
+        if (silla.Estado === true) {
+          silla.Estado = false
+          numSillasSeleccionadas -= 1
+          valorEstaCompra -= silla.Precio
+          let indexSilla = sillasSeleccionadas.indexOf(silla.idSilla)
+          sillasSeleccionadas.splice(indexSilla, 1)
+          sillas[index] = silla
+          setEconomicas(sillas)
+        } else {
+          if (numSillasSeleccionadas < 3) {
+            silla.Estado = true
+            numSillasSeleccionadas += 1
+            valorEstaCompra += silla.Precio
+            sillasSeleccionadas.push(silla.idSilla)
+
+            sillas[index] = silla
+            setEconomicas(sillas)
+          } else {
+            setError(['No puede seleccionar más de 3 asientos por compra'])
+          }
+        }
+      }
+    }
+  }
+
+  const handleCompra = () => {
+    var venta = []
+    if(numSillasSeleccionadas === 0){
+      setError('Debe seleccionar al menos 1 silla')
+    }else{
+      sillasSeleccionadas.forEach(element => {
+        venta.push({
+          asiento: asientos.filter((asiento) => asiento.idSilla === element),
+          usuario: JSON.parse(localStorage.getItem('user')),
+        })
+      })
+      setVenta(venta)
+      setHayVenta(true)
+    }
+  }
+
   if (hayVenta) {
     return (
-      <Venta></Venta>
+      <Venta venta={venta} valorCompra={valorEstaCompra}></Venta>
     )
   }
   return (
@@ -104,10 +144,11 @@ export default function Asientos() {
             <h4 className='green'>Espacio Economico</h4>
           </div>
           <hr></hr>
+          <br></br>
           <div className='esta__compra'>
             <h4>Valor de esta compra: {valorEstaCompra}</h4>
             <h4>Cantidad de Sillas: {numSillasSeleccionadas}</h4>
-            <button disabled={true}>Comprar</button>
+            <button onClick={handleCompra}>Comprar</button>
             <div className='error__container'>
               <h4 className='red'>{error}</h4>
             </div>
